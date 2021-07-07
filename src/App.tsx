@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import MainLayout from 'src/components/MainLayout';
 import InputBar from 'src/components/InputBar';
 
 function App() {
@@ -6,7 +7,11 @@ function App() {
     console.log(`new word: ${newWord}`);
   }, []);
 
-  return <InputBar onWordSubmit={handleWordSubmit} />;
+  return (
+    <MainLayout
+      mainArea={<div>Main area</div>}
+      bottomArea={<InputBar onWordSubmit={handleWordSubmit} />}
+    />
+  );
 }
-
 export default App;
