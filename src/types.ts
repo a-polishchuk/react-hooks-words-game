@@ -7,7 +7,5 @@ export interface Styles {
 export interface WordData {
   id: string;
   word: string;
-  left: number;
-  top: number;
   timeToLive: number;
 }

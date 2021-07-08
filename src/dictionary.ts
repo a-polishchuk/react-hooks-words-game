@@ -14,12 +14,10 @@ const DICTIONARY = [
   'nine',
 ];
 
-export function generateWordData(maxX: number, maxY: number): WordData {
+export function generateWordData(): WordData {
   return {
     id: uuid(),
     word: getRandomElement(DICTIONARY),
-    left: Math.random() * maxX,
-    top: Math.random() * maxY,
     timeToLive: 1000,
   };
 }
