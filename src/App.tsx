@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { WordData } from 'src/types';
 import { generateWordData } from 'src/dictionary';
+import { useInterval } from 'src/hooks/useInterval';
 import MainLayout from 'src/components/MainLayout';
 import SpawnPool from 'src/components/SpawnPool';
 import InputBar from 'src/components/InputBar';
@@ -10,15 +11,11 @@ const SPAWN_DELAY = 2000;
 function App() {
   const [words, setWords] = useState<WordData[]>([]);
 
-  useEffect(() => {
-    const intervalHandle = setInterval(() => {
-      setWords((array) => [...array, generateWordData()]);
-    }, SPAWN_DELAY);
-
-    return () => {
-      clearInterval(intervalHandle);
-    };
+  const spawnWord = useCallback(() => {
+    setWords((array) => [...array, generateWordData()]);
   }, []);
+
+  useInterval(spawnWord, SPAWN_DELAY);
 
   const handleWordSubmit = useCallback((newWord: string) => {
     console.log(`new word: ${newWord}`);
