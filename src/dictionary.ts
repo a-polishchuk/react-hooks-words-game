@@ -20,6 +20,6 @@ export function generateWordData(maxX: number, maxY: number): WordData {
     word: getRandomElement(DICTIONARY),
     left: Math.random() * maxX,
     top: Math.random() * maxY,
-    timeToLive: 5000,
+    timeToLive: 1000,
   };
 }

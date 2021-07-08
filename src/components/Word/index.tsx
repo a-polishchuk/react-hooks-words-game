@@ -1,26 +1,17 @@
-import { CSSProperties, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { WordData } from 'src/types';
+import { getStyle } from './styles';
 
 interface Props {
   wordData: WordData;
+  parentRect: DOMRect | undefined;
   onTimeout: (wordId: string) => void;
 }
 
-function Word({ wordData, onTimeout }: Props) {
-  const { id, word, left, top, timeToLive } = wordData;
+function Word({ wordData, parentRect, onTimeout }: Props) {
+  const { id, word, left: x, top: y, timeToLive } = wordData;
   const [opacity, setOpacity] = useState<number>(1);
-
-  const style: CSSProperties = useMemo(
-    () => ({
-      position: 'absolute',
-      left,
-      top,
-      fontSize: 14,
-      opacity,
-      transition: 'all linear 2s',
-    }),
-    [left, top, opacity]
-  );
+  const style = getStyle(x, y, opacity, parentRect);
 
   useEffect(() => {
     setTimeout(() => setOpacity(0), timeToLive);
