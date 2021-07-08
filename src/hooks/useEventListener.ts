@@ -19,10 +19,10 @@ export function useEventListener<T extends Event>(
       }
     };
 
-    document.addEventListener(eventName, eventListener);
+    window.addEventListener(eventName, eventListener);
 
     return () => {
-      document.removeEventListener(eventName, eventListener);
+      window.removeEventListener(eventName, eventListener);
     };
   }, [eventName]);
 }
