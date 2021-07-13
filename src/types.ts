@@ -8,4 +8,5 @@ export interface WordData {
   id: string;
   word: string;
   timeToLive: number;
+  complexity: number;
 }

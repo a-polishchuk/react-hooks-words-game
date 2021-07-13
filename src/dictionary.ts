@@ -14,10 +14,15 @@ const DICTIONARY = [
   'nine',
 ];
 
+const MIN_TTL = 1000;
+const MAX_TTL = 5000;
+
 export function generateWordData(): WordData {
+  const word = getRandomElement(DICTIONARY);
   return {
     id: uuid(),
-    word: getRandomElement(DICTIONARY),
-    timeToLive: 1000,
+    word,
+    timeToLive: MIN_TTL + Math.random() * (MAX_TTL - MIN_TTL),
+    complexity: word.length,
   };
 }

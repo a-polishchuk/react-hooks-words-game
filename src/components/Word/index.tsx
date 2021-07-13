@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { WordData } from 'src/types';
-import { getStyle } from './styles';
+import { useStyle } from './styles';
 
 interface Props {
   wordData: WordData;
@@ -9,13 +9,9 @@ interface Props {
 }
 
 function Word({ wordData, parentRect, onTimeout }: Props) {
-  const { id, word, timeToLive } = wordData;
+  const { id, word, timeToLive, complexity } = wordData;
   const [opacity, setOpacity] = useState<number>(1);
-
-  const { width, height } = parentRect!;
-  const x = useMemo(() => Math.random() * width, [width]);
-  const y = useMemo(() => Math.random() * height, [height]);
-  const style = getStyle(x, y, opacity, parentRect);
+  const style = useStyle(opacity, complexity, parentRect!);
 
   useEffect(() => {
     setTimeout(() => setOpacity(0), timeToLive);
