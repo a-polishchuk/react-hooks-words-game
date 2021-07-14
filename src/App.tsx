@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { WordData } from 'src/types';
-import { generateWordData } from 'src/dictionary';
 import { useInterval } from 'src/hooks/useInterval';
 import MainLayout from 'src/components/MainLayout';
 import SpawnPool from 'src/components/SpawnPool';
@@ -14,14 +13,10 @@ function App() {
   const [words, setWords] = useState<WordData[]>([]);
   const [score, setScore] = useState<number>(0);
 
-  useEffect(() => {
-    fetchRandomWord().then((word) => {
-      console.log(word);
-    });
-  }, []);
-
   const spawnWord = useCallback(() => {
-    setWords((array) => [...array, generateWordData()]);
+    fetchRandomWord().then((randomWord) => {
+      setWords((array) => [...array, randomWord]);
+    });
   }, []);
 
   useInterval(spawnWord, SPAWN_DELAY);
