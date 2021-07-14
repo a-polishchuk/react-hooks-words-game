@@ -10,3 +10,15 @@ export interface WordData {
   timeToLive: number;
   complexity: number;
 }
+
+export interface IncomingWordResult {
+  partOfSpeech: string;
+  definition: string;
+  examples?: string[];
+  synonyms?: string[];
+}
+
+export interface IncomingWord {
+  word: string;
+  results: IncomingWordResult[];
+}
