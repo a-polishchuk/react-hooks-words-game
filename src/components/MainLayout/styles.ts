@@ -6,16 +6,28 @@ export const styles: Styles = {
     width: '100vw',
     height: '100vh',
     gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto 200px',
+    gridTemplateRows: '64px auto 200px',
   },
-  mainArea: {
+  topArea: {
     gridColumn: 1,
     gridRow: 1,
     padding: 10,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  mainArea: {
+    gridColumn: 1,
+    gridRow: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    display: 'flex',
+    flexDirection: 'column',
   },
   bottomArea: {
     gridColumn: 1,
-    gridRow: 2,
+    gridRow: 3,
     padding: 10,
+    display: 'flex',
+    flexDirection: 'column',
   },
 };

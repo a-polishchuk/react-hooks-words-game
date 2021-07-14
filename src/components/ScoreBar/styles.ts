@@ -3,11 +3,16 @@ import { Styles } from 'src/types';
 export const styles: Styles = {
   root: {
     flex: 1,
-    fontSize: 128,
+    fontSize: 24,
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'start',
     alignItems: 'center',
     backgroundColor: '#EEEEEE',
     border: '2px dashed #BBBBBB',
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  score: {
+    marginLeft: 10,
   },
 };

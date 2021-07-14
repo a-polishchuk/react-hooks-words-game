@@ -5,11 +5,13 @@ import { useInterval } from 'src/hooks/useInterval';
 import MainLayout from 'src/components/MainLayout';
 import SpawnPool from 'src/components/SpawnPool';
 import InputBar from 'src/components/InputBar';
+import ScoreBar from 'src/components/ScoreBar';
 
 const SPAWN_DELAY = 2000;
 
 function App() {
   const [words, setWords] = useState<WordData[]>([]);
+  const [score, setScore] = useState<number>(0);
 
   const spawnWord = useCallback(() => {
     setWords((array) => [...array, generateWordData()]);
@@ -17,9 +19,19 @@ function App() {
 
   useInterval(spawnWord, SPAWN_DELAY);
 
-  const handleWordSubmit = useCallback((newWord: string) => {
-    console.log(`new word: ${newWord}`);
-  }, []);
+  const handleWordSubmit = useCallback(
+    (typedWord: string) => {
+      const matchedWords = words.filter((w) => w.word === typedWord);
+      const points = matchedWords.map((w) => w.complexity);
+      const sum = points.reduce((prev, current) => prev + current, 0);
+      setScore((value) => value + sum);
+
+      setWords((array) => {
+        return array.filter((w) => w.word !== typedWord);
+      });
+    },
+    [words]
+  );
 
   const handleWordTimeout = (wordId: string) => {
     setWords((array) => {
@@ -29,6 +41,7 @@ function App() {
 
   return (
     <MainLayout
+      topArea={<ScoreBar score={score} />}
       mainArea={<SpawnPool words={words} onWordTimeout={handleWordTimeout} />}
       bottomArea={<InputBar onWordSubmit={handleWordSubmit} />}
     />
