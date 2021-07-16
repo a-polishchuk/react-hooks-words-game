@@ -1,9 +1,7 @@
 import { useMemo } from 'react';
 import { CSSProperties } from 'react';
 import { getRandomElement } from 'src/utils';
-
-const PALETTE = ['#F75C03', '#D90368', '#820263', '#291720', '#04A777'];
-const FONTS = ['Roboto', 'Nunito', 'Playfair', 'OtomanopeeOne'];
+import { FONTS, PALETTE } from 'src/constants';
 
 function getTransform(x: number, y: number, parentRect: DOMRect) {
   const inRightHalf = x > parentRect.width / 2;

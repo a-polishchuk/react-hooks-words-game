@@ -11,8 +11,10 @@ export const styles: Styles = {
     border: '2px dashed #BBBBBB',
     paddingLeft: 10,
     paddingRight: 10,
+    transition: 'all 1s linear',
   },
   score: {
     marginLeft: 10,
+    fontWeight: 600,
   },
 };
