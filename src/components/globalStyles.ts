@@ -2,7 +2,6 @@ import { Styles } from 'src/types';
 
 export const globalStyles: Styles = {
   bar: {
-    height: '100%',
     flex: 1,
     display: 'flex',
     justifyContent: 'start',

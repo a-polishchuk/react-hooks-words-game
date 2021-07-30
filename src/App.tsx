@@ -8,6 +8,7 @@ import TopBar from 'src/components/TopBar';
 import Score from 'src/components/Score';
 import LastWord from 'src/components/LastWord';
 import { fetchRandomWord } from 'src/services/words';
+import Modal from 'src/components/common/Modal';
 
 const SPAWN_DELAY = 2000;
 
@@ -53,17 +54,22 @@ function App() {
   };
 
   return (
-    <MainLayout
-      topArea={
-        <TopBar>
-          <Score score={score} />
-          <div style={{ width: 10 }} />
-          <LastWord word={lastWord} points={lastPoints} />
-        </TopBar>
-      }
-      mainArea={<SpawnPool words={words} onWordTimeout={handleWordTimeout} />}
-      bottomArea={<InputBar onWordSubmit={handleWordSubmit} />}
-    />
+    <>
+      <Modal>
+        <span>Hello, world!</span>
+      </Modal>
+      <MainLayout
+        topArea={
+          <TopBar>
+            <Score score={score} />
+            <div style={{ width: 10 }} />
+            <LastWord word={lastWord} points={lastPoints} />
+          </TopBar>
+        }
+        mainArea={<SpawnPool words={words} onWordTimeout={handleWordTimeout} />}
+        bottomArea={<InputBar onWordSubmit={handleWordSubmit} />}
+      />
+    </>
   );
 }
 
