@@ -2,6 +2,7 @@ import { Styles } from 'src/types';
 
 export const styles: Styles = {
   root: {
+    height: '100%',
     flex: 1,
     fontSize: 24,
     display: 'flex',
@@ -12,9 +13,5 @@ export const styles: Styles = {
     paddingLeft: 10,
     paddingRight: 10,
     transition: 'all 1s linear',
-  },
-  score: {
-    marginLeft: 10,
-    fontWeight: 600,
   },
 };

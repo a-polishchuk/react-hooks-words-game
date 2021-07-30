@@ -4,7 +4,9 @@ import { useInterval } from 'src/hooks/useInterval';
 import MainLayout from 'src/components/MainLayout';
 import SpawnPool from 'src/components/SpawnPool';
 import InputBar from 'src/components/InputBar';
-import ScoreBar from 'src/components/ScoreBar';
+import TopBar from 'src/components/TopBar';
+import Score from 'src/components/Score';
+import LastWord from 'src/components/LastWord';
 import { fetchRandomWord } from 'src/services/words';
 
 const SPAWN_DELAY = 2000;
@@ -12,6 +14,8 @@ const SPAWN_DELAY = 2000;
 function App() {
   const [words, setWords] = useState<WordData[]>([]);
   const [score, setScore] = useState<number>(0);
+  const [lastWord, setLastWord] = useState<string>('');
+  const [lastPoints, setLastPoints] = useState<number>(0);
 
   const spawnWord = useCallback(() => {
     fetchRandomWord().then((randomWord) => {
@@ -24,6 +28,10 @@ function App() {
   const handleWordSubmit = useCallback(
     (typedWord: string) => {
       const matchedWords = words.filter((w) => w.word === typedWord);
+      if (matchedWords.length === 0) {
+        return;
+      }
+
       const points = matchedWords.map((w) => w.complexity);
       const sum = points.reduce((prev, current) => prev + current, 0);
       setScore((value) => value + sum);
@@ -31,6 +39,9 @@ function App() {
       setWords((array) => {
         return array.filter((w) => w.word !== typedWord);
       });
+
+      setLastWord(typedWord);
+      setLastPoints(sum);
     },
     [words]
   );
@@ -43,7 +54,13 @@ function App() {
 
   return (
     <MainLayout
-      topArea={<ScoreBar score={score} />}
+      topArea={
+        <TopBar>
+          <Score score={score} />
+          <div style={{ width: 10 }} />
+          <LastWord word={lastWord} points={lastPoints} />
+        </TopBar>
+      }
       mainArea={<SpawnPool words={words} onWordTimeout={handleWordTimeout} />}
       bottomArea={<InputBar onWordSubmit={handleWordSubmit} />}
     />
