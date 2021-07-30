@@ -1,13 +1,10 @@
 import { Styles } from 'src/types';
+import { globalStyles } from 'src/components/globalStyles';
 
 export const styles: Styles = {
   root: {
-    flex: 1,
+    ...globalStyles.bar,
     fontSize: 128,
-    display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#EEEEEE',
-    border: '2px dashed #BBBBBB',
   },
 };
