@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
 import { WordData } from 'src/types';
 import { useInterval } from 'src/hooks/useInterval';
+import { fetchRandomWord } from 'src/services/words';
 import MainLayout from 'src/components/MainLayout';
 import SpawnPool from 'src/components/SpawnPool';
 import InputBar from 'src/components/InputBar';
 import TopBar from 'src/components/TopBar';
 import Score from 'src/components/Score';
 import LastWord from 'src/components/LastWord';
-import { fetchRandomWord } from 'src/services/words';
-import Modal from 'src/components/common/Modal';
+import Button from 'src/components/common/Button';
 
 const SPAWN_DELAY = 2000;
 
@@ -53,16 +53,17 @@ function App() {
     });
   };
 
+  const handleMenuClick = () => {
+    // pause game, show menu popup
+  };
+
   return (
     <>
-      <Modal>
-        <span>Hello, world!</span>
-      </Modal>
       <MainLayout
         topArea={
           <TopBar>
+            <Button text="Menu" onClick={handleMenuClick} />
             <Score score={score} />
-            <div style={{ width: 10 }} />
             <LastWord word={lastWord} points={lastPoints} />
           </TopBar>
         }
