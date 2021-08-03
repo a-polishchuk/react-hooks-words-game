@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
-import { GameStatus, WordData } from 'src/types';
+import { useCallback, useEffect, useReducer } from 'react';
+import { ActionType, GameStatus, INITIAL_STATE } from 'src/types';
 import { useInterval } from 'src/hooks/useInterval';
 import { fetchRandomWord } from 'src/services/words';
+import { reducer } from './reducer';
 import MainLayout from 'src/components/MainLayout';
 import SpawnPool from 'src/components/SpawnPool';
 import InputBar from 'src/components/InputBar';
@@ -14,15 +15,15 @@ import Menu from 'src/components/Menu';
 const SPAWN_DELAY = 2000;
 
 function App() {
-  const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.IDLE);
-  const [words, setWords] = useState<WordData[]>([]);
-  const [score, setScore] = useState<number>(0);
-  const [lastWord, setLastWord] = useState<string>('');
-  const [lastPoints, setLastPoints] = useState<number>(0);
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+  const { gameStatus, words, score, lastWord, lastPoints } = state;
 
   const spawnWord = useCallback(() => {
     fetchRandomWord().then((randomWord) => {
-      setWords((array) => [...array, randomWord]);
+      dispatch({
+        type: ActionType.ADD_WORD,
+        payload: randomWord,
+      });
     });
   }, []);
 
@@ -37,30 +38,24 @@ function App() {
     }
   }, [gameStatus, isRunning, restart, stop]);
 
-  const handleWordSubmit = useCallback(
-    (typedWord: string) => {
-      const matchedWords = words.filter((w) => w.word === typedWord);
-      if (matchedWords.length === 0) {
-        return;
-      }
-
-      const points = matchedWords.map((w) => w.complexity);
-      const sum = points.reduce((prev, current) => prev + current, 0);
-      setScore((value) => value + sum);
-
-      setWords((array) => {
-        return array.filter((w) => w.word !== typedWord);
-      });
-
-      setLastWord(typedWord);
-      setLastPoints(sum);
-    },
-    [words]
-  );
+  const handleWordSubmit = useCallback((typedWord: string) => {
+    dispatch({
+      type: ActionType.SUBMIT_WORD,
+      payload: typedWord,
+    });
+  }, []);
 
   const handleWordTimeout = (wordId: string) => {
-    setWords((array) => {
-      return array.filter((w) => w.id !== wordId);
+    dispatch({
+      type: ActionType.EXPIRE_WORD,
+      payload: wordId,
+    });
+  };
+
+  const setGameStatus = (newGameStatus: GameStatus) => {
+    dispatch({
+      type: ActionType.SET_GAME_STATUS,
+      payload: newGameStatus,
     });
   };
 
@@ -87,8 +82,7 @@ function App() {
             <LastWord word={lastWord} points={lastPoints} />
           </TopBar>
         }
-        mainArea="Main area"
-        // mainArea={<SpawnPool words={words} onWordTimeout={handleWordTimeout} />}
+        mainArea={<SpawnPool words={words} onWordTimeout={handleWordTimeout} />}
         bottomArea={<InputBar onWordSubmit={handleWordSubmit} />}
       />
     </>
