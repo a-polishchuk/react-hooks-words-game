@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react';
-import { WordData } from 'src/types';
+import { useCallback, useEffect, useState } from 'react';
+import { GameStatus, WordData } from 'src/types';
 import { useInterval } from 'src/hooks/useInterval';
 import { fetchRandomWord } from 'src/services/words';
 import MainLayout from 'src/components/MainLayout';
@@ -9,10 +9,12 @@ import TopBar from 'src/components/TopBar';
 import Score from 'src/components/Score';
 import LastWord from 'src/components/LastWord';
 import Button from 'src/components/common/Button';
+import Menu from 'src/components/Menu';
 
 const SPAWN_DELAY = 2000;
 
 function App() {
+  const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.IDLE);
   const [words, setWords] = useState<WordData[]>([]);
   const [score, setScore] = useState<number>(0);
   const [lastWord, setLastWord] = useState<string>('');
@@ -24,7 +26,16 @@ function App() {
     });
   }, []);
 
-  useInterval(spawnWord, SPAWN_DELAY);
+  const { isRunning, stop, restart } = useInterval(spawnWord, SPAWN_DELAY);
+
+  useEffect(() => {
+    if (gameStatus === GameStatus.PLAYING && !isRunning) {
+      restart();
+    }
+    if (gameStatus === GameStatus.PAUSED && isRunning) {
+      stop();
+    }
+  }, [gameStatus, isRunning, restart, stop]);
 
   const handleWordSubmit = useCallback(
     (typedWord: string) => {
@@ -54,11 +65,20 @@ function App() {
   };
 
   const handleMenuClick = () => {
-    // pause game, show menu popup
+    if (gameStatus === GameStatus.PLAYING) {
+      setGameStatus(GameStatus.PAUSED);
+    } else {
+      setGameStatus(GameStatus.PLAYING);
+    }
   };
 
   return (
     <>
+      <Menu
+        gameStatus={gameStatus}
+        setGameStatus={setGameStatus}
+        score={score}
+      />
       <MainLayout
         topArea={
           <TopBar>
@@ -67,7 +87,8 @@ function App() {
             <LastWord word={lastWord} points={lastPoints} />
           </TopBar>
         }
-        mainArea={<SpawnPool words={words} onWordTimeout={handleWordTimeout} />}
+        mainArea="Main area"
+        // mainArea={<SpawnPool words={words} onWordTimeout={handleWordTimeout} />}
         bottomArea={<InputBar onWordSubmit={handleWordSubmit} />}
       />
     </>

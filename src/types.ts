@@ -22,3 +22,10 @@ export interface IncomingWord {
   word: string;
   results: IncomingWordResult[];
 }
+
+export enum GameStatus {
+  IDLE = 'idle',
+  PLAYING = 'playing',
+  PAUSED = 'paused',
+  FINISHED = 'finsihed',
+}

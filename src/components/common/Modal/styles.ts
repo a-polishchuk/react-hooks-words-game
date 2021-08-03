@@ -16,8 +16,10 @@ export const styles: Styles = {
   body: {
     ...globalStyles.bar,
     justifyContent: 'center',
-    boxShadow: '2px 5px 16px -4px rgba(0,0,0,0.74)',
+    boxShadow: '7px 7px 0px 0px #00000088',
     maxWidth: '60%',
     padding: 20,
+    display: 'flex',
+    flexDirection: 'column',
   },
 };

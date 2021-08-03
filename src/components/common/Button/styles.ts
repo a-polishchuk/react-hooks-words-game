@@ -12,7 +12,6 @@ export function getStyle(
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#EEEEEE',
     paddingLeft: 20,
     paddingTop: 10,
     paddingRight: 20,
@@ -21,7 +20,7 @@ export function getStyle(
     fontWeight: 600,
     border: `2px ${borderStyle} #BBBBBB`,
     transform: pressed ? 'translate(5px, 5px)' : '',
-    boxShadow: pressed ? '' : '5px 5px 0px 0px #E1EEFF',
+    boxShadow: pressed ? '' : '5px 5px 0px 0px #E1CCFF',
     opacity,
   };
 }
