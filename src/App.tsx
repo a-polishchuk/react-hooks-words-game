@@ -33,7 +33,7 @@ function App() {
     if (gameStatus === GameStatus.PLAYING && !isRunning) {
       restart();
     }
-    if (gameStatus === GameStatus.PAUSED && isRunning) {
+    if (gameStatus !== GameStatus.PLAYING && isRunning) {
       stop();
     }
   }, [gameStatus, isRunning, restart, stop]);
