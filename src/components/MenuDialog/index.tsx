@@ -1,24 +1,29 @@
-import { GameStatus } from 'src/types';
+import { ActionType, GameStatus } from 'src/types';
+import { useGameContext } from 'src/components/GameContext';
 import Dialog from 'src/components/common/Dialog';
 
-interface Props {
-  gameStatus: GameStatus;
-  setGameStatus: (newValue: GameStatus) => void;
-  score: number;
-}
+function MenuDialog() {
+  const [state, dispatch] = useGameContext();
+  const { gameStatus, score } = state;
 
-function MenuModal({ gameStatus, setGameStatus, score }: Props) {
   const playGame = () => {
-    setGameStatus(GameStatus.PLAYING);
+    dispatch({
+      type: ActionType.SET_GAME_STATUS,
+      payload: GameStatus.PLAYING,
+    });
   };
 
   const finishGame = () => {
-    setGameStatus(GameStatus.FINISHED);
+    dispatch({
+      type: ActionType.SET_GAME_STATUS,
+      payload: GameStatus.FINISHED,
+    });
   };
 
   const playAgain = () => {
-    // TODO: we need to clear the app state
-    setGameStatus(GameStatus.PLAYING);
+    dispatch({
+      type: ActionType.PLAY_AGAIN,
+    });
   };
 
   switch (gameStatus) {
@@ -65,4 +70,4 @@ function getScoreMessage(score: number) {
   return 'Great job, nicely done!';
 }
 
-export default MenuModal;
+export default MenuDialog;

@@ -1,27 +1,27 @@
-import { ReactNode, Children, Fragment } from 'react';
-import { styles } from './styles';
+import { ActionType, GameStatus } from 'src/types';
+import { useGameContext } from 'src/components/GameContext';
+import RowLayout from 'src/components/common/RowLayout';
+import Button from 'src/components/common/Button';
+import Score from './Score';
+import LastWord from './LastWord';
 
-interface Props {
-  children: ReactNode;
-}
+function TopBar() {
+  const [state, dispatch] = useGameContext();
+  const { score, lastWord, lastPoints } = state;
 
-function TopBar({ children }: Props) {
-  const array = Children.toArray(children);
+  const handleMenuClick = () => {
+    dispatch({
+      type: ActionType.SET_GAME_STATUS,
+      payload: GameStatus.PAUSED,
+    });
+  };
 
   return (
-    <div style={styles.root}>
-      {array.map((child, index) => {
-        if (index === array.length - 1) {
-          return child;
-        }
-        return (
-          <Fragment key={index}>
-            {child}
-            <div style={{ width: 10 }} />
-          </Fragment>
-        );
-      })}
-    </div>
+    <RowLayout>
+      <Button text="Menu" onClick={handleMenuClick} />
+      <Score score={score} />
+      <LastWord word={lastWord} points={lastPoints} />
+    </RowLayout>
   );
 }
 

@@ -1,13 +1,12 @@
 import { useCallback, useState } from 'react';
 import { useEventListener } from 'src/hooks/useEventListener';
+import { useGameContext } from 'src/components/GameContext';
+import { ActionType } from 'src/types';
 import { isLetter } from 'src/utils';
 import { styles } from './styles';
 
-interface Props {
-  onWordSubmit: (word: string) => void;
-}
-
-function InputBar({ onWordSubmit }: Props) {
+function InputBar() {
+  const [, dispatch] = useGameContext();
   const [word, setWord] = useState<string>('');
 
   useEventListener<KeyboardEvent>(
@@ -20,7 +19,10 @@ function InputBar({ onWordSubmit }: Props) {
             setWord((value) => value.substr(0, value.length - 1));
             break;
           case 'Enter':
-            onWordSubmit(word);
+            dispatch({
+              type: ActionType.SUBMIT_WORD,
+              payload: word,
+            });
             setWord('');
             break;
           default:
@@ -30,7 +32,7 @@ function InputBar({ onWordSubmit }: Props) {
             break;
         }
       },
-      [onWordSubmit, word]
+      [dispatch, word]
     )
   );
 
