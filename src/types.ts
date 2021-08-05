@@ -36,6 +36,8 @@ export interface State {
   score: number;
   lastWord: string;
   lastPoints: number;
+  timeLeft: number;
+  playTime: number;
 }
 
 export const INITIAL_STATE: State = {
@@ -44,14 +46,18 @@ export const INITIAL_STATE: State = {
   score: 0,
   lastWord: '',
   lastPoints: 0,
+  timeLeft: 60 * 1000,
+  playTime: 0,
 };
 
 export enum ActionType {
-  SET_GAME_STATUS = 'set_game_status',
+  PLAY = 'play',
+  PAUSE = 'pause',
   PLAY_AGAIN = 'play_again',
   ADD_WORD = 'add_word',
   SUBMIT_WORD = 'submit_word',
   EXPIRE_WORD = 'expire_word',
+  GAME_OVER = 'game_over',
 }
 
 export interface Action {

@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useGameContext } from 'src/components/GameContext';
 import { PALETTE } from 'src/constants';
 import { getRandomElement } from 'src/utils';
 import ScoreCounter from './ScoreCounter';
 import { styles } from './styles';
 
-interface Props {
-  score: number;
-}
-
-function ScoreBar({ score }: Props) {
+function ScoreBar() {
+  const [{ score }] = useGameContext();
   const [color, setColor] = useState<string>(PALETTE[0]);
 
   useEffect(() => {

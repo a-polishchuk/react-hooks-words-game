@@ -9,15 +9,30 @@ import { submitWord } from './submitWord';
 
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case ActionType.SET_GAME_STATUS:
+    case ActionType.PLAY:
       return {
         ...state,
-        gameStatus: action.payload,
+        gameStatus: GameStatus.PLAYING,
+        playTime: Date.now(),
+      };
+    case ActionType.PAUSE:
+      const timePassed = Date.now() - state.playTime;
+      return {
+        ...state,
+        gameStatus: GameStatus.PAUSED,
+        timeLeft: state.timeLeft - timePassed,
+      };
+    case ActionType.GAME_OVER:
+      return {
+        ...state,
+        gameStatus: GameStatus.FINISHED,
+        timeLeft: 0,
       };
     case ActionType.PLAY_AGAIN:
       return {
         ...INITIAL_STATE,
         gameStatus: GameStatus.PLAYING,
+        playTime: Date.now(),
       };
     case ActionType.ADD_WORD:
       return {

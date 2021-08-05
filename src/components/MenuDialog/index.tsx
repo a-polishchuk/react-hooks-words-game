@@ -8,15 +8,13 @@ function MenuDialog() {
 
   const playGame = () => {
     dispatch({
-      type: ActionType.SET_GAME_STATUS,
-      payload: GameStatus.PLAYING,
+      type: ActionType.PLAY,
     });
   };
 
   const finishGame = () => {
     dispatch({
-      type: ActionType.SET_GAME_STATUS,
-      payload: GameStatus.FINISHED,
+      type: ActionType.GAME_OVER,
     });
   };
 

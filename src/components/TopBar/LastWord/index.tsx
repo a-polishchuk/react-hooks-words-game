@@ -1,17 +1,16 @@
+import { useGameContext } from 'src/components/GameContext';
 import { styles } from './styles';
 
-interface Props {
-  word: string;
-  points: number;
-}
+function LastWord() {
+  const [state] = useGameContext();
+  const { lastWord, lastPoints } = state;
 
-function LastWord({ word, points }: Props) {
   return (
     <div style={styles.root}>
       Last word:&nbsp;
-      {word && (
+      {lastWord && (
         <b>
-          {word} ({points} points)
+          {lastWord} ({lastPoints} points)
         </b>
       )}
     </div>

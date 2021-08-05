@@ -1,26 +1,26 @@
-import { ActionType, GameStatus } from 'src/types';
+import { ActionType } from 'src/types';
 import { useGameContext } from 'src/components/GameContext';
 import RowLayout from 'src/components/common/RowLayout';
 import Button from 'src/components/common/Button';
 import Score from './Score';
 import LastWord from './LastWord';
+import Timer from './Timer';
 
 function TopBar() {
-  const [state, dispatch] = useGameContext();
-  const { score, lastWord, lastPoints } = state;
+  const [, dispatch] = useGameContext();
 
   const handleMenuClick = () => {
     dispatch({
-      type: ActionType.SET_GAME_STATUS,
-      payload: GameStatus.PAUSED,
+      type: ActionType.PAUSE,
     });
   };
 
   return (
     <RowLayout>
       <Button text="Menu" onClick={handleMenuClick} />
-      <Score score={score} />
-      <LastWord word={lastWord} points={lastPoints} />
+      <Score />
+      <LastWord />
+      <Timer />
     </RowLayout>
   );
 }
