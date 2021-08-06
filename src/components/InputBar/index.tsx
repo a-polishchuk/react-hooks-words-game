@@ -1,18 +1,22 @@
 import { useCallback, useState } from 'react';
 import { useEventListener } from 'src/hooks/useEventListener';
 import { useGameContext } from 'src/components/GameContext';
-import { ActionType } from 'src/types';
+import { ActionType, GameStatus } from 'src/types';
 import { isLetter } from 'src/utils';
 import { styles } from './styles';
 
 function InputBar() {
-  const [, dispatch] = useGameContext();
+  const [state, dispatch] = useGameContext();
+  const isPlaying = state.gameStatus === GameStatus.PLAYING;
   const [word, setWord] = useState<string>('');
 
   useEventListener<KeyboardEvent>(
     'keydown',
     useCallback(
       (event: KeyboardEvent) => {
+        if (!isPlaying) {
+          return;
+        }
         const { key } = event;
         switch (key) {
           case 'Backspace':
@@ -32,7 +36,7 @@ function InputBar() {
             break;
         }
       },
-      [dispatch, word]
+      [dispatch, isPlaying, word]
     )
   );
 

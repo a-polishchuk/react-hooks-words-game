@@ -4,7 +4,7 @@ import { useElementRect } from 'src/hooks/useElementRect';
 import { useInterval } from 'src/hooks/useInterval';
 import { useGameContext } from 'src/components/GameContext';
 import { fetchRandomWord } from 'src/services/words';
-import Word from 'src/components/Word';
+import Word from './Word';
 import { styles } from './styles';
 
 const SPAWN_DELAY = 2000;
