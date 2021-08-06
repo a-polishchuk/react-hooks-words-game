@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useEventListener } from 'src/hooks/useEventListener';
 import { useGameContext } from 'src/components/GameContext';
 import { ActionType, GameStatus } from 'src/types';
@@ -7,7 +7,8 @@ import { styles } from './styles';
 
 function InputBar() {
   const [state, dispatch] = useGameContext();
-  const isPlaying = state.gameStatus === GameStatus.PLAYING;
+  const { gameStatus } = state;
+  const isPlaying = gameStatus === GameStatus.PLAYING;
   const [word, setWord] = useState<string>('');
 
   useEventListener<KeyboardEvent>(
@@ -39,6 +40,12 @@ function InputBar() {
       [dispatch, isPlaying, word]
     )
   );
+
+  useEffect(() => {
+    if (gameStatus === GameStatus.FINISHED) {
+      setWord('');
+    }
+  }, [gameStatus]);
 
   return <div style={styles.root}>{word}</div>;
 }
