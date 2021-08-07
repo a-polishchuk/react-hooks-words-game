@@ -1,10 +1,21 @@
+import { useEffect } from 'react';
 import { ActionType, GameStatus } from 'src/types';
 import { useGameContext } from 'src/components/GameContext';
+import { useLocalStorage } from 'src/hooks/useLocalStorage';
+import { usePrevious } from 'src/hooks/usePrevious';
 import Dialog from 'src/components/common/Dialog';
 
 function MenuDialog() {
   const [state, dispatch] = useGameContext();
   const { gameStatus, score } = state;
+  const [highScore, setHighScore] = useLocalStorage<number>('high-score', 0);
+  const [prevHighScore, setPrevHighScore] = usePrevious<number>(highScore);
+
+  useEffect(() => {
+    if (gameStatus !== GameStatus.FINISHED && score > highScore) {
+      setHighScore(score);
+    }
+  }, [gameStatus, highScore, score, setHighScore]);
 
   const playGame = () => {
     dispatch({
@@ -19,6 +30,7 @@ function MenuDialog() {
   };
 
   const playAgain = () => {
+    setPrevHighScore(highScore);
     dispatch({
       type: ActionType.PLAY_AGAIN,
     });
@@ -48,7 +60,7 @@ function MenuDialog() {
       return (
         <Dialog
           title="Game over"
-          message={`Your score is ${score} points. ${getScoreMessage(score)}`}
+          message={getScoreMessage(score, prevHighScore)}
           okText="One more time"
           onOk={playAgain}
         />
@@ -58,14 +70,18 @@ function MenuDialog() {
   }
 }
 
-function getScoreMessage(score: number) {
+function getScoreMessage(score: number, prevHighScore: number) {
+  const youScored = `You scored ${score} points.\n`;
+  if (score > prevHighScore) {
+    return youScored + 'This is new High Score!';
+  }
   if (score < 100) {
-    return 'You can do better!';
+    return youScored + 'You can do better!';
   }
   if (score < 200) {
-    return 'Not bad, not bad...';
+    return youScored + 'Not bad, not bad...';
   }
-  return 'Great job, nicely done!';
+  return youScored + 'Great job, nicely done!';
 }
 
 export default MenuDialog;
