@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-type Listener<T> = (event: T) => void;
+type Listener<T extends Event> = (event: T) => void;
 
 export function useEventListener<T extends Event>(
   eventName: string,
